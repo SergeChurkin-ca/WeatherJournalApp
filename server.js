@@ -23,7 +23,7 @@ app.use(express.static('website'));
 
 
 // Setup Serverconst port = 8080;
-const port = 8080;
+const port = 8000;
 const server = app.listen(port, listening);
 
 function listening() {
@@ -31,6 +31,16 @@ function listening() {
     console.log(`running on localhost ${port}`);
 }
 
-app.get('/', function(req, res) {
-    res.send('All set and running')
+app.get('/', (req, res) => {
+    res.send(projectData);
+})
+
+app.post('/', (req, res) => {
+    dataObj.date = req.body.date;
+    dataObj.temp = req.body.temp;
+    dataObj.content = req.body.content;
+
+    projectData.push(dataObj);
+
+    res.send(true);
 })
