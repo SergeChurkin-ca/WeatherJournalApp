@@ -22,7 +22,7 @@ app.use(cors());
 app.use(express.static('website'));
 
 
-// Setup Serverconst port = 8080;
+// Setup Serverconst port = 
 const port = 8000;
 const server = app.listen(port, listening);
 
@@ -31,16 +31,15 @@ function listening() {
     console.log(`running on localhost ${port}`);
 }
 
-app.get('/all', (req, res) => {
-    res.send(projectData);
-})
 
-app.post('/add', (req, res) => {
-    dataObj.date = req.body.date;
-    dataObj.temp = req.body.temp;
-    dataObj.content = req.body.content;
+app.get('/get', (req, res) => {
+        res.send(projectData);
+    })
+    // Post Route
+app.post('/add', function(req, res) {
+    projectData = req.body;
+    console.log('post request: received');
+    console.log(projectData);
+    res.send('Post received');
 
-    projectData.push(dataObj);
-
-    res.send(true);
-})
+});
