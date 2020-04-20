@@ -32,14 +32,13 @@ function listening() {
 }
 
 
-app.get('/get', (req, res) => {
+app.get('/', (req, res) => {
         res.send(projectData);
     })
     // Post Route
-app.post('/add', function(req, res) {
+app.post('/post', function(req, res) {
     projectData = req.body;
     console.log('post request: received');
     console.log(projectData);
     res.send('Post received');
-
 });
