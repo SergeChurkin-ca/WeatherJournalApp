@@ -49,4 +49,5 @@ app.post('/add', (req, res) => {
     projectData.push(dataObject);
 
     res.send(true);
+    console.log('post has been received')
 });
