@@ -1,6 +1,3 @@
-// Setup empty JS object to act as endpoint for all routes
-const projectData = {};
-
 // Require Express to run server and routes
 const express = require('express');
 
@@ -9,7 +6,8 @@ const express = require('express');
 const app = express();
 /* Middleware*/
 const bodyParser = require('body-parser');
-
+// Setup empty JS object to act as endpoint for all routes
+const projectData = [];
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -32,13 +30,23 @@ function listening() {
 }
 
 
-app.get('/', (req, res) => {
-        res.send(projectData);
-    })
-    // Post Route
-app.post('/post', function(req, res) {
-    projectData = req.body;
-    console.log('post request: received');
-    console.log(projectData);
-    res.send('Post received');
+// Callback to complete GET '/all'
+app.get('/get', (req, res) => {
+    res.send(projectData);
+})
+
+// Post Route
+app.post('/add', (req, res) => {
+    let dataObject = {}
+    dataObject.date = req.body.date;
+    dataObject.temp = req.body.temp;
+    dataObject.cityInput = req.body.city
+    dataObject.country = req.body.country
+    dataObject.feelslike = req.body.feelslike
+    dataObject.description = req.body.description
+    dataObject.content = req.body.content;
+
+    projectData.push(dataObject);
+
+    res.send(true);
 });
