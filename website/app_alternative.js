@@ -1,63 +1,144 @@
-/* Global Variables */
+// --------------------------------------------------
+// Global variables
+// --------------------------------------------------
 const apikey = 'bbbec3ba75bc468635dca07422eb073f';
 const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 const messageBody = document.getElementById('content');
 
-const city = document.getElementById('city').value;
+// --------------------------------------------------
+// Get API url and set the date
+// --------------------------------------------------
+const endpointUrl = city => finalApiUrl = `${baseURL}q=${city}&appid=${apikey}`;
+let d = new Date();
+let newDate = d.getMonth() + '/' + d.getDate() + '/' + d.getFullYear();
 
-const feelings = document.getElementById('feelings').value;
+// --------------------------------------------------
+// GET posts from server
+// --------------------------------------------------
 
+const getPosts = async(url = '') => {
+    const posts = await fetch(url, {
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+    try {
+        const records = await posts.json();
+        return records;
+    } catch (error) {
+        console.error('getPosts');
+    }
 
-document.getElementById('generate').addEventListener('click', performAction);
-document.getElementById('generate').addEventListener('click', addPost);
-document.getElementById('generate').addEventListener('click', getPosts);
-// Event listener and rendering message on page
-function performAction() {
-    fetch(baseURL + 'q=' + city + '&appid=' + apikey)
-        .then(res => res.json())
-        .then(data => {
-            //  console.log(data.name);
-            //   messageBody.innerHTML = `${data.name},${data.sys.country} ${Math.round(data.main.temp -273.15)}C ${data.weather[0].description}, feels like ${Math.round(data.main.feels_like -273.15)}C. <br>${feelings}<br>`;
-            return data;
-        })
-        .catch(error => console.log(error))
 }
 
+// --------------------------------------------------
+// GET the Weather from API
+// --------------------------------------------------
 
+const getWeather = async(url = '') => {
+    const res = await fetch(url);
+    try {
+        const data = await res.json();
+        return data;
 
+    } catch (error) {
+        console.error('getWeather');
+        alert('Please check your selection');
+        return false;
+    }
+};
+// --------------------------------------------------
+// POST record to local server
+// --------------------------------------------------
 
-//POST
-function addPost(e) {
-    e.preventDefault();
-    // let city = document.getElementById('city').value;
-    // let feelings = document.getElementById('feelings').value;
-    fetch('https://jsonplaceholder.typicode.com/posts', {
+const postData = async(url = '', data = {}) => {
+        const response = await fetch(url, {
             method: 'POST',
+            credentials: 'same-origin',
             headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
-            body: JSON.stringify({ city, feelings })
-        })
-        .then(res => res.json())
-        .then((data) => console.log(data))
+            body: JSON.stringify(data),
+        });
+        try {
+            const res = await response.json();
+            return true;
+        } catch (error) {
+            console.error('postData');
+            return false;
+        }
+    }
+    // --------------------------------------------
+    // Route posts
+    // --------------------------------------------
+const addPost = () => {
+    getPosts('/get').then(data => {
+        updateUI(data);
+    });
 }
 
+// --------------------------------------------------
+// Update UI
+// --------------------------------------------------
 
-// GET posted messages
-function getPosts() {
-    fetch('https://jsonplaceholder.typicode.com/posts')
-        .then((res) => res.json())
-        .then((data) => {
-            let output = '<h2 class="mb-4">Posts</h2>';
-            data.forEach(function(post) {
-                output += `
-            <h3>${post.title}</h3>
-            <p>${data.name}</p>
-        `;
-            });
-            messageBody.insertAdjacentHTML('afterbegin', output);
+const updateUI = (items) => {
+    let html = items.map((item => {
+        return ` 
+        <p>  ${item.date} ${item.cityInput},${item.country}<br>
+        ${Math.round(item.temp -273.15)}C 
+        feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}<br>
+        ${item.content}
+        </p>`;
+    })).join(" ");
+
+    messageBody.innerHTML = html;
+}
+
+// --------------------------------------------------
+// Event listener adds a new post 
+// --------------------------------------------------
+const addRecordToPosts = () => {
+
+    const city = document.getElementById('city').value;
+    const feelings = document.getElementById('feelings').value;
+
+    if (feelings.length < 5) {
+        alert('please provide your input');
+        return;
+    }
+
+    getWeather(endpointUrl(city))
+        .then(data => {
+            // variables to include in post
+            if (data) {
+                const newRecord = {}
+                newRecord.date = newDate;
+                newRecord.temp = data.main.temp;
+                newRecord.content = feelings;
+                newRecord.feelslike = data.main.feels_like;
+                newRecord.city = data.name; //!
+                newRecord.country = data.sys.country;
+                newRecord.description = data.weather[0].description;
+                postData('/add', newRecord)
+            }
         })
-        .catch(error => console.error('error', error))
+        .then(addPost)
+        .then(clearInputFields)
+        .catch((error) => console.log(error, window.alert("Can't find, is the city spelling right?")))
+}
+
+// --------------------------------------------
+// Start execution
+// --------------------------------------------
+addPost();
+// EVent lisetener 
+document.getElementById('generate').addEventListener('click', addRecordToPosts);
+
+// --------------------------------------------
+// Clear Input Fields
+// --------------------------------------------
+function clearInputFields() {
+    document.getElementById("myForm").reset();
 }
