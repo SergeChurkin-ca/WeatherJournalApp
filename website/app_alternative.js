@@ -71,7 +71,7 @@ const postData = async(url = '', data = {}) => {
         }
     }
     // --------------------------------------------
-    // Route posts
+    // Route posts, post on local server
     // --------------------------------------------
 const addPost = () => {
     getPosts('/get').then(data => {
@@ -94,6 +94,7 @@ const updateUI = (items) => {
     })).join(" ");
 
     messageBody.innerHTML = html;
+
 }
 
 // --------------------------------------------------
@@ -118,7 +119,7 @@ const addRecordToPosts = () => {
                 newRecord.temp = data.main.temp;
                 newRecord.content = feelings;
                 newRecord.feelslike = data.main.feels_like;
-                newRecord.city = data.name; //!
+                newRecord.city = data.name;
                 newRecord.country = data.sys.country;
                 newRecord.description = data.weather[0].description;
                 postData('/add', newRecord)
