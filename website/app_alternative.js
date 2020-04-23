@@ -6,6 +6,11 @@ const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 const messageBody = document.getElementById('content');
 
+const postImage = new Image();
+postImage.src = 'https://pixabay.com/get/54e6d0414f55ad14f1dc84609629317f1d3fdce15b4c704c7d287edc964dcc50_640.jpg';
+
+
+
 // --------------------------------------------------
 // Get API url and set the date
 // --------------------------------------------------
@@ -85,17 +90,21 @@ const addPost = () => {
 
 const updateUI = (items) => {
     let html = items.map((item => {
+
         return ` 
         <p>  ${item.date} ${item.cityInput},${item.country}<br>
         ${Math.round(item.temp -273.15)}C 
         feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}<br>
-        ${item.content}
+        ${item.content} 
+        <img src='${postImage.src}' width='400'>
         </p>`;
+
     })).join(" ");
 
     messageBody.innerHTML = html;
-
 }
+
+// https://pixabay.com/api/?key=16180248-8ef6bbd5f7c532a0d387fef96&q=kyiv+landmark&image_type=photo&pretty=true
 
 // --------------------------------------------------
 // Event listener adds a new post 
@@ -122,13 +131,16 @@ const addRecordToPosts = () => {
                 newRecord.city = data.name;
                 newRecord.country = data.sys.country;
                 newRecord.description = data.weather[0].description;
+                newRecord.postImage = postImage;
                 postData('/add', newRecord)
             }
         })
         .then(addPost)
         .then(clearInputFields)
-        .catch((error) => console.log(error, window.alert("Can't find, is the city spelling right?")))
+        .catch((error) => console.log(error, window.alert("Can't find it. Is the city spelled right? Maybe try another option?")))
 }
+
+
 
 // --------------------------------------------
 // Start execution
