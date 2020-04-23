@@ -44,8 +44,8 @@ app.post('/add', (req, res) => {
     dataObject.country = req.body.country
     dataObject.feelslike = req.body.feelslike
     dataObject.description = req.body.description
+    dataObject.postImage = req.body.postImage
     dataObject.content = req.body.content;
-
     projectData.push(dataObject);
 
     res.send(true);
