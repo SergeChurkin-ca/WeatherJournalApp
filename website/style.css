@@ -19,6 +19,20 @@ main {
     display: inline-flex;
    
 }
+@media screen and (max-width: 1000px) {
+    main {
+        display: block;
+        justify-content: center;
+    }
+    p {
+        margin: 0 0 0 -5em;
+    
+    }
+    img {
+        margin-top: -2em;
+    }
+}
+
 
 .entry {
     background: rgba(59, 74, 107, .4);
@@ -36,7 +50,7 @@ header {
     font-size: 2.9rem;
     font-weight: 600;
     line-height: 2em;
-    text-shadow: 0.05em 0.05em 0.05em grey;
+    text-shadow: 0.05em 0.05em 0.05em #3b4a6b;
     color: white;
     margin-bottom: 1em;
 }
@@ -131,17 +145,24 @@ h2 {
 p {
     color: #3b4a6b;
     padding: 1em;
-    background-color: white;
+    background-color:coral;
     border-radius: 0.5em; 
     border: solid 0.2em grey;
     width: 40em;
     height: 15em;
-    background-image: url("https://pixabay.com/get/54e6d0414f55ad14f6da8c7dda7936781437dee757596c4870277cd19f4cc551b0_1280.jpg");
-    background-size: contain, cover;
-    background-repeat: no-repeat;
-    background-position: right;
+    justify-content: space-around;
 }
 
+p img {
+    float: right;
+    margin-top: -2em;
+    border: solid 0.1em grey;
+    border-radius: 0.3em;
+    box-shadow: 0.2em 0.2em 0.2em #444;
+}
+img {
+    max-height: 14em;
+}
 /* Style for Placeholder Text*/
 
 ::placeholder {
@@ -161,3 +182,4 @@ p {
     color: #f0d43a;
     font-family: 'Oswald', sans-serif;
 }
+

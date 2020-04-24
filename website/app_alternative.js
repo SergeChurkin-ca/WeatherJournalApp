@@ -6,33 +6,16 @@ const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 const messageBody = document.getElementById('content');
 
-
-const client_id = "hbBOu9AKRq7CnwOqH5tY2Bj5KvBr7MI5Pdx54Jk6oq0";
-
-//const city = document.getElementById('city').value;
+//const CITY = document.getElementById('city').value;
 
 
 API_KEY = '16180248-8ef6bbd5f7c532a0d387fef96';
+client_id = 'hbBOu9AKRq7CnwOqH5tY2Bj5KvBr7MI5Pdx54Jk6oq0';
+
 // postImage.src = "https://pixabay.com/api/?key=" + API_KEY + "&q=" + city;
-// //postImage.src = 'https://pixabay.com/get/54e2dc444853ac14f6da8c7dda7936781437dee757596c4870277cd2924ac451b1_1280.jpg';
 
-
-// https://pixabay.com/api/?key=16180248-8ef6bbd5f7c532a0d387fef96&q=yellow+flowers&image_type=photo&pretty=true
 
 const postImage = new Image();
-fetch(`https://pixabay.com/api/?key=${API_KEY}&q=travel&image_type=photo&pretty=true`)
-    .then(res => res.json())
-    .then(
-        result => {
-            const html = result.hits.map(
-                hit => hit.webformatURL
-            );
-            postImage.src = html;
-        },
-        error => {
-            console.log(error);
-        }
-    );
 
 
 // --------------------------------------------------
@@ -121,7 +104,7 @@ const updateUI = (items) => {
         ${Math.round(item.temp -273.15)}C 
         feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}<br>
         ${item.content} 
-        <img src='${postImage.src}' width='400'>
+        <img src='${postImage.src}'>
         </p>`;
 
     })).join(" ");
@@ -138,9 +121,25 @@ const addRecordToPosts = () => {
     const city = document.getElementById('city').value;
     const feelings = document.getElementById('feelings').value;
 
+    fetch(`https://api.unsplash.com/search/photos?query=${city}&client_id=${client_id}`)
+        .then(res => res.json())
+        .then(
+            result => {
+                const imgurl = result.results.map(
+                    hit => hit.urls.regular
+                );
+                postImage.src = imgurl[0];
+                console.log(imgurl[0])
+            },
+            error => {
+                console.log(error);
+            }
+        );
+
     if (feelings.length < 5) {
         alert('please provide your input');
         return;
+
     }
 
     getWeather(endpointUrl(city))
@@ -180,3 +179,10 @@ document.getElementById('generate').addEventListener('click', addRecordToPosts);
 function clearInputFields() {
     document.getElementById("myForm").reset();
 }
+
+
+
+
+
+// https://pixabay.com/api/?key=16180248-8ef6bbd5f7c532a0d387fef96&q=yellow+flowers&image_type=photo&pretty=true
+// url: "https://api.unsplash.com/search/photos?query=cars&client_id=hbBOu9AKRq7CnwOqH5tY2Bj5KvBr7MI5Pdx54Jk6oq0"
