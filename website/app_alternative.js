@@ -6,9 +6,33 @@ const baseURL = 'https://api.openweathermap.org/data/2.5/weather?';
 
 const messageBody = document.getElementById('content');
 
-const postImage = new Image();
-postImage.src = 'https://pixabay.com/get/54e6d0414f55ad14f1dc84609629317f1d3fdce15b4c704c7d287edc964dcc50_640.jpg';
 
+const client_id = "hbBOu9AKRq7CnwOqH5tY2Bj5KvBr7MI5Pdx54Jk6oq0";
+
+//const city = document.getElementById('city').value;
+
+
+API_KEY = '16180248-8ef6bbd5f7c532a0d387fef96';
+// postImage.src = "https://pixabay.com/api/?key=" + API_KEY + "&q=" + city;
+// //postImage.src = 'https://pixabay.com/get/54e2dc444853ac14f6da8c7dda7936781437dee757596c4870277cd2924ac451b1_1280.jpg';
+
+
+// https://pixabay.com/api/?key=16180248-8ef6bbd5f7c532a0d387fef96&q=yellow+flowers&image_type=photo&pretty=true
+
+const postImage = new Image();
+fetch(`https://pixabay.com/api/?key=${API_KEY}&q=travel&image_type=photo&pretty=true`)
+    .then(res => res.json())
+    .then(
+        result => {
+            const html = result.hits.map(
+                hit => hit.webformatURL
+            );
+            postImage.src = html;
+        },
+        error => {
+            console.log(error);
+        }
+    );
 
 
 // --------------------------------------------------
@@ -84,13 +108,14 @@ const addPost = () => {
     });
 }
 
+
+
 // --------------------------------------------------
 // Update UI
 // --------------------------------------------------
 
 const updateUI = (items) => {
     let html = items.map((item => {
-
         return ` 
         <p>  ${item.date} ${item.cityInput},${item.country}<br>
         ${Math.round(item.temp -273.15)}C 
@@ -104,7 +129,6 @@ const updateUI = (items) => {
     messageBody.innerHTML = html;
 }
 
-// https://pixabay.com/api/?key=16180248-8ef6bbd5f7c532a0d387fef96&q=kyiv+landmark&image_type=photo&pretty=true
 
 // --------------------------------------------------
 // Event listener adds a new post 
@@ -146,6 +170,7 @@ const addRecordToPosts = () => {
 // Start execution
 // --------------------------------------------
 addPost();
+
 // EVent lisetener 
 document.getElementById('generate').addEventListener('click', addRecordToPosts);
 
