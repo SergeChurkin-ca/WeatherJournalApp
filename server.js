@@ -40,11 +40,11 @@ app.post('/add', (req, res) => {
     let dataObject = {}
     dataObject.date = req.body.date;
     dataObject.temp = req.body.temp;
-    dataObject.cityInput = req.body.city
-    dataObject.country = req.body.country
-    dataObject.feelslike = req.body.feelslike
-    dataObject.description = req.body.description
-    dataObject.postImage = req.body.postImage
+    dataObject.cityInput = req.body.city;
+    dataObject.country = req.body.country;
+    dataObject.feelslike = req.body.feelslike;
+    dataObject.description = req.body.description;
+    dataObject.imgurl = req.body.postImage;
     dataObject.content = req.body.content;
     projectData.push(dataObject);
 
