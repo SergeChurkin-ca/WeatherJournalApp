@@ -1,13 +1,16 @@
 // Require Express to run server and routes
 const express = require('express');
 
-
 // Start up an instance of app
 const app = express();
 /* Middleware*/
 const bodyParser = require('body-parser');
-// Setup empty JS object to act as endpoint for all routes
-const projectData = [];
+
+
+// Setup empty JS Object to act as endpoint for all routes 
+const projectData = {};
+
+
 //Here we are configuring express to use body-parser as middle-ware.
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -29,11 +32,13 @@ function listening() {
     console.log(`running on localhost ${port}`);
 }
 
-
-// Callback to complete GET '/all'
-app.get('/get', (req, res) => {
+// GET route
+app.get('/getProjectData', (req, res) => {
     res.send(projectData);
 })
+
+// empty JS object to enable adding new posts on page dynamically
+const weatherData = [];
 
 // Post Route
 app.post('/add', (req, res) => {
@@ -46,8 +51,14 @@ app.post('/add', (req, res) => {
     dataObject.description = req.body.description;
     dataObject.imgurl = req.body.postImage;
     dataObject.content = req.body.content;
-    projectData.push(dataObject);
+
+    weatherData.push(dataObject);
 
     res.send(true);
     console.log('post has been received')
 });
+
+// Callback to complete GET '/all'
+app.get('/get', (req, res) => {
+    res.send(weatherData);
+})

@@ -81,7 +81,6 @@ const addPost = () => {
     });
 };
 
-
 // --------------------------------------------------
 // Event listener adds a new post
 // --------------------------------------------------
@@ -143,7 +142,8 @@ const addRecordToPosts = (e) => {
 const updateUI = (items) => {
     let html = items.map((item => {
         return ` 
-        <p>  ${item.date} ${item.cityInput},${item.country}<br>
+        <p>
+        ${item.date} ${item.cityInput},${item.country}<br>
         ${Math.round(item.temp -273.15)}C 
         feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}<br>
         ${item.content} 
