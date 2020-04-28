@@ -138,21 +138,19 @@ const addRecordToPosts = (e) => {
 // --------------------------------------------------
 // Update UI
 // --------------------------------------------------
-
 const updateUI = (items) => {
     let html = items.map((item => {
-        return ` 
-        <p>
-        ${item.date} ${item.cityInput},${item.country}<br>
-        ${Math.round(item.temp -273.15)}C 
-        feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}<br>
-        ${item.content} 
-        </p>`;
 
+        return `<div class="entryHolder">
+                
+                  <div class="date">${item.date} ${item.cityInput},${item.country}</div>
+                  <div class="temp"> ${Math.round(item.temp -273.15)}C, feels like ${Math.round(item.feelslike -273.15)}C, ${item.description}</div>
+                  <div class="content">${item.content}</div>
+                
+                </div>`;
     })).join(" ");
 
     messageBody.innerHTML = html;
-
 }
 
 // --------------------------------------------

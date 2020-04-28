@@ -23,7 +23,7 @@ main {
         justify-content: center;
         margin: 0 2em 0 0;
     }
-    p {
+    .entryHolder {
         margin: 0 0 2em 3em;
     }
 }
@@ -133,16 +133,19 @@ h2 {
     font-size: 1.2rem;
 }
 
-p {
+.entryHolder {
     color: #3b4a6b;
     padding: 1em;
+    margin-bottom: 2em;
     background-color: coral;
     border-radius: 0.5em;
     border: solid 0.2em grey;
     width: 30em;
-    height: 6em;
+    height: 5em;
     justify-content: space-around;
 }
+
+
 
 
 /* Style for Placeholder Text*/
